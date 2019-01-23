@@ -4,6 +4,7 @@
 @import "@material/image-list/mdc-image-list";
 @import "@material/ripple/mixins";
 @import "@material/typography/mdc-typography";
+@import "@material/elevation/mdc-elevation";
 
 .home {
   display: flex; // Flexbox is used to easily arrange the persistent drawer and content side-by-side
@@ -24,7 +25,7 @@
 }
 
 .product-list {
-  @include mdc-image-list-standard-columns(4);
+  @include mdc-image-list-masonry-columns(4);
 
   overflow: auto;
 
@@ -39,10 +40,12 @@
   .mdc-image-list__label {
     @include mdc-typography(subtitle2);
   }
+
+  padding: 80px 100px 0;
 }
 
 .shrine-drawer {
-  @include mdc-drawer-fill-color-accessible(primary);
+  @include mdc-drawer-fill-color-accessible(surface);
   // Drawer defaults to a higher z-index, but we aren't overlaying it over anything
   @include mdc-drawer-z-index(0);
 
@@ -61,6 +64,7 @@
   .mdc-list .mdc-list-item {
     @include mdc-states-activated(#fff);
   }
+  border-right-width: 0;
 }
 
 .shrine-select-item-divider {
@@ -74,5 +78,19 @@
 
 // This needs 2-class specificity to override MDC Drawer styles
 .shrine-drawer .shrine-select-item-divider {
+  @include mdc-theme-prop(border-bottom-color, primary);
   margin: 0 auto;
+}
+
+.shrine-body {
+  // @include mdc-elevation(4);
+
+  display: block;
+  overflow: auto;
+  z-index: 0; // Elevate over the drawer
+}
+
+.home {
+  background-color: $mdc-theme-background;
+  color: $mdc-theme-on-background;
 }

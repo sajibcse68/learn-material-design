@@ -1,3 +1,5 @@
+const autoprefixer = require('autoprefixer');
+
 function getStyleUse(bundleFilename) {
   return [
     {
@@ -32,6 +34,41 @@ module.exports = [
     },
   },
   {
+    entry: './form.scss',
+    output: {
+      // This is necessary for webpack to compile
+      // But we never use style-bundle.js
+      filename: 'style-bundle-form.js',
+    },
+    module: {
+      rules: [{
+        test: /\.scss$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'bundle-form.css',
+            },
+          },
+          { loader: 'extract-loader' },
+          { loader: 'css-loader' },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [autoprefixer()],
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              includePaths: ['./node_modules'],
+            }
+          },
+        ]
+      }]
+    },
+  },
+  {
     entry: './home.scss',
     output: {
       // This is necessary for webpack to compile, but we never reference this js file.
@@ -52,6 +89,19 @@ module.exports = [
     module: {
       loaders: [{
         test: /login.js$/,
+        loader: 'babel-loader',
+        query: {presets: ['env']}
+      }]
+    },
+  },
+  {
+    entry: "./form.js",
+    output: {
+      filename: "bundle-form.js"
+    },
+    module: {
+      loaders: [{
+        test: /\.js$/,
         loader: 'babel-loader',
         query: {presets: ['env']}
       }]
